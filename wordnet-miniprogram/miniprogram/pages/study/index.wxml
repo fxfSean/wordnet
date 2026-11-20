@@ -1,0 +1,90 @@
+<view class="study {{themeClass}}">
+  <view class="study-top">
+    <view>
+      <text class="study-kicker">{{dueOnly ? 'REVIEW SESSION' : 'LEARN SESSION'}}</text>
+      <text class="study-count">{{completed}} / {{total}} cards</text>
+    </view>
+    <text class="study-close" bindtap="home">×</text>
+  </view>
+
+  <view class="progress-track"><view class="progress-fill" style="width: {{progressPercent}}%"></view></view>
+  <text class="feedback" wx:if="{{feedback}}">{{feedback}}</text>
+
+  <block wx:if="{{card}}">
+    <view class="stage">
+      <view class="stage-meta">
+        <text class="pos">{{card.pos}}</text>
+        <text class="unit">Unit {{cardUnit}} · {{remaining}} in queue</text>
+      </view>
+
+      <text class="study-word">{{card.word}}</text>
+
+      <view class="listen-chip" bindtap="speakWord">
+        <text class="listen-dot"></text>
+        <text>{{accentLabel}} pronunciation</text>
+      </view>
+
+      <block wx:if="{{revealed}}">
+        <text class="study-definition">{{card.definition}}</text>
+        <text class="study-definition-zh" wx:if="{{card.definitionZh}}">{{card.definitionZh}}</text>
+
+        <view class="word-tools">
+          <text class="tool" bindtap="openDetail">Details</text>
+          <text class="tool" bindtap="editNote">{{note ? 'Edit note' : 'Add note'}}</text>
+        </view>
+
+        <view class="example-card" wx:for="{{examples}}" wx:key="en">
+          <text class="example-en">{{item.en}}</text>
+          <text class="example-zh" wx:if="{{item.zh}}">{{item.zh}}</text>
+          <view class="example-actions">
+            <text class="example-play" catchtap="speakExample" data-index="{{index}}">Play</text>
+            <text class="example-save" catchtap="saveSentence" data-index="{{index}}">Save</text>
+          </view>
+        </view>
+        <text class="empty-example" wx:if="{{!examples.length}}">No example for this sense yet.</text>
+        <text class="note" wx:if="{{note}}">{{note}}</text>
+
+        <view class="study-block" wx:if="{{phrases.length}}">
+          <text class="study-block-title">Collocations</text>
+          <view class="phrase-row" wx:for="{{phrases}}" wx:key="en">
+            <text class="phrase-en">{{item.en}}</text>
+            <text class="phrase-zh" wx:if="{{item.zh}}">{{item.zh}}</text>
+          </view>
+        </view>
+
+        <view class="study-block" wx:if="{{roots.length}}">
+          <text class="study-block-title">Word roots</text>
+          <view class="root-row" wx:for="{{roots}}" wx:key="form">
+            <text class="root-form">{{item.form}}</text>
+            <text class="root-meaning">{{item.meaning}}</text>
+          </view>
+        </view>
+      </block>
+
+      <view wx:else class="hint">
+        <text class="hint-title">Recall the meaning</text>
+        <text class="hint-body">Say the meaning in your head, then reveal the definition.</text>
+      </view>
+    </view>
+
+    <view class="bottom-bar">
+      <button wx:if="{{!revealed}}" class="reveal-button" bindtap="reveal">Show meaning</button>
+      <view wx:else class="rate-row">
+        <button class="rate forgot" bindtap="dontKnow"><text class="rate-dot forgot-dot"></text>Forgot</button>
+        <button class="rate fuzzy" bindtap="fuzzy"><text class="rate-dot fuzzy-dot"></text>Fuzzy</button>
+        <button class="rate know" bindtap="know"><text class="rate-dot know-dot"></text>Know</button>
+      </view>
+      <view class="bottom-links">
+        <text bindtap="home">Home</text>
+        <text bindtap="toggleTheme">{{themeLabel}} mode</text>
+        <text bindtap="editNote">Note</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="empty">
+    <text class="empty-title">You're caught up.</text>
+    <text class="empty-body">{{waiting || 'Come back when your next reviews are due.'}}</text>
+    <button class="reveal-button" bindtap="home">Back to home</button>
+  </view>
+</view>

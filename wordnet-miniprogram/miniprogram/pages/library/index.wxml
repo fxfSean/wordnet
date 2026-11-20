@@ -1,0 +1,107 @@
+<view class="shell {{themeClass}}">
+  <block wx:if="{{!selected}}">
+    <view class="library-head">
+      <text class="kicker">WORDBOOK</text>
+      <text class="link-button" bindtap="shelf">Bookshelf</text>
+    </view>
+    <text class="title">{{bookTitle}}</text>
+    <input class="search" value="{{query}}" placeholder="Find a word" bindinput="search" />
+    <button class="secondary" bindtap="showSaved">{{savedOnly ? 'Show all words' : 'Saved words'}}</button>
+    <text class="muted empty-list" wx:if="{{!entries.length}}">{{emptyMessage}}</text>
+    <view class="entry" wx:for="{{entries}}" wx:key="word" bindtap="open" data-word="{{item.word}}">
+      <text class="entry-word">{{item.word}}</text>
+      <text class="entry-meta">Unit {{item.unit}}</text>
+    </view>
+    <button wx:if="{{moreWords}}" class="secondary sep" bindtap="loadMoreWords">Load more words</button>
+  </block>
+
+  <block wx:else>
+    <view class="word-hero">
+      <view class="word-hero-top">
+        <text class="word-hero-kicker">{{selected.primaryPos}} · {{selected.senses.length}} senses</text>
+        <text class="word-hero-listen" bindtap="speakWord">Listen</text>
+      </view>
+      <text class="word-hero-word">{{selected.word}}</text>
+      <text class="word-hero-meta">{{selected.unitLabel}}</text>
+      <view class="word-hero-actions">
+        <button class="hero-button" bindtap="toggleSaved">{{selected.saved ? 'Saved' : 'Save word'}}</button>
+        <button class="hero-button ghost" bindtap="back">Back</button>
+      </view>
+    </view>
+
+    <view class="paper detail-card">
+      <scroll-view class="tab-bar" scroll-x>
+        <text wx:for="{{selected.tabs}}" wx:key="id"
+              class="tab {{selected.activeTab === item.id ? 'on' : ''}}"
+              data-tab="{{item.id}}" bindtap="selectTab">{{item.label}} {{item.count}}</text>
+      </scroll-view>
+
+      <block wx:if="{{selected.activeTab === 'definition'}}">
+        <block wx:for="{{selected.senses}}" wx:key="id">
+          <view class="sep" wx:if="{{item.primary || more}}">
+            <text class="kicker">{{item.pos}}</text>
+            <text class="definition">{{item.definition}}</text>
+            <text class="definition-zh" wx:if="{{item.definitionZh}}">{{item.definitionZh}}</text>
+          </view>
+        </block>
+        <text class="example" wx:if="{{!selected.senses.length}}">No learner senses available yet.</text>
+        <button wx:if="{{selected.hasMore}}" class="secondary top-gap" bindtap="toggle">{{more ? 'Show less' : 'More senses'}}</button>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'examples'}}">
+        <block wx:for="{{selected.examples}}" wx:key="key">
+          <view class="sentence-card">
+            <text class="kicker">{{item.pos}}</text>
+            <text class="sentence-en">{{item.en}}</text>
+            <text class="sentence-zh" wx:if="{{item.zh}}">{{item.zh}}</text>
+            <view class="sentence-actions">
+              <text class="sentence-play" catchtap="speakExample" data-index="{{index}}">Play</text>
+              <text class="sentence-save" catchtap="saveSentence" data-index="{{index}}">Save</text>
+            </view>
+          </view>
+        </block>
+        <text class="example" wx:if="{{!selected.examples.length}}">No example sentences yet.</text>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'phrases'}}">
+        <text class="example" wx:if="{{!selected.phrases.length}}">Phrase data is not available for this word yet.</text>
+        <block wx:for="{{selected.phrases}}" wx:key="en">
+          <view class="sentence-card"><text class="sentence-en">{{item.en}}</text><text class="sentence-zh" wx:if="{{item.zh}}">{{item.zh}}</text></view>
+        </block>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'roots'}}">
+        <text class="example" wx:if="{{!selected.roots.length}}">Root data is not available for this word yet.</text>
+        <block wx:for="{{selected.roots}}" wx:key="form">
+          <view class="sentence-card"><text class="definition">{{item.form}}</text><text class="sentence-zh">{{item.meaning}}</text></view>
+        </block>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'derivatives'}}">
+        <view class="chips" wx:if="{{selected.derivatives.length}}">
+          <text class="chip" wx:for="{{selected.derivatives}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="example" wx:if="{{!selected.derivatives.length}}">No related word forms found.</text>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'synonyms'}}">
+        <text class="kicker">Synonyms</text>
+        <view class="chips" wx:if="{{selected.synonyms.length}}">
+          <text class="chip" wx:for="{{selected.synonyms}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="example" wx:if="{{!selected.synonyms.length}}">No synonyms found.</text>
+        <text class="kicker top-gap" wx:if="{{selected.antonyms.length}}">Antonyms</text>
+        <view class="chips" wx:if="{{selected.antonyms.length}}">
+          <text class="chip chip-warm" wx:for="{{selected.antonyms}}" wx:key="*this">{{item}}</text>
+        </view>
+      </block>
+
+      <block wx:if="{{selected.activeTab === 'notes'}}">
+        <textarea class="note-input" value="{{selected.noteDraft}}" placeholder="Add a memory hook, translation or usage note" bindinput="noteInput" auto-height></textarea>
+        <button class="primary top-gap" bindtap="saveNote">Save note</button>
+      </block>
+    </view>
+  </block>
+
+  <text class="source">Word lists: New General Service List Project (NGSL, NAWL, TSL, BSL, NGSL-Spoken, New Dolch), CC BY-SA 4.0. Definitions and examples: Princeton WordNet 3.0.</text>
+</view>

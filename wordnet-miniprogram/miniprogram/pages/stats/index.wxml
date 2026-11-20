@@ -1,0 +1,79 @@
+<view class="shell stats-page {{themeClass}}">
+  <text class="kicker">PROGRESS</text>
+  <text class="title">Study stats</text>
+  <text class="muted">{{bookTitle}}</text>
+
+  <view class="stats-hero">
+    <view class="stats-hero-main">
+      <text class="stats-hero-num">{{todayCount}}</text>
+      <text class="stats-hero-label">cards today</text>
+    </view>
+    <view class="stats-hero-side">
+      <view class="stats-hero-item"><text class="stats-hero-value">{{streak}}</text><text class="stats-hero-key">day streak</text></view>
+      <view class="stats-hero-item"><text class="stats-hero-value">{{todayTime}}</text><text class="stats-hero-key">active</text></view>
+    </view>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">MOMENTUM</text>
+    <view class="row"><text>Last 7 days</text><text>{{weekCount}} cards · {{weekTime}}</text></view>
+    <view class="row sep"><text>Last 30 days</text><text>{{monthCount}} cards · {{monthTime}}</text></view>
+    <view class="row sep"><text>All time</text><text>{{totalTime}}</text></view>
+    <view class="row sep"><text>Due now</text><text>{{due}}</text></view>
+  </view>
+
+  <view class="paper">
+    <view class="section-head">
+      <text class="kicker">CALENDAR</text>
+      <text class="muted">{{calendar.checkInDays}} check-in days</text>
+    </view>
+    <text class="calendar-title">{{calendar.title}}</text>
+    <view class="calendar-weekdays">
+      <text wx:for="{{calendar.weekdays}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="calendar-grid">
+      <view class="calendar-cell {{item.today ? 'today' : ''}}" wx:for="{{calendar.cells}}" wx:key="key">
+        <text class="calendar-day" wx:if="{{item.inMonth}}">{{item.day}}</text>
+        <view class="calendar-dot level-{{item.level}}" wx:if="{{item.inMonth && item.level}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">MASTERY</text>
+    <view class="mastery-row" wx:for="{{masteryRows}}" wx:key="label">
+      <view class="mastery-head"><text>{{item.label}}</text><text class="muted">{{item.value}}</text></view>
+      <view class="mastery-track"><view class="mastery-fill {{item.tone}}" style="width: {{item.percent}}%"></view></view>
+    </view>
+    <view class="row sep"><text>Cards studied</text><text>{{totalStudied}}</text></view>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">LAST 14 DAYS</text>
+    <view class="chart">
+      <view class="bar-col" wx:for="{{bars}}" wx:key="date">
+        <view class="bar" style="height: {{item.height}}%"></view>
+        <text class="bar-label">{{item.label}}</text>
+      </view>
+    </view>
+    <text class="example" wx:if="{{!bars.length}}">No activity yet.</text>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">RECENT DAYS</text>
+    <view class="recent-row" wx:for="{{recent}}" wx:key="date">
+      <text class="recent-date">{{item.date}}</text>
+      <text class="muted">{{item.count}} cards · {{item.newCount}} new · {{item.reviewCount}} review</text>
+    </view>
+    <text class="example" wx:if="{{!recent.length}}">Start studying to build a history.</text>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">BACKUP</text>
+    <text class="example">Export progress, notes and settings before changing devices.</text>
+    <view class="actions">
+      <button class="secondary" bindtap="exportBackup">Export</button>
+      <button class="secondary" bindtap="importBackup">Import</button>
+    </view>
+  </view>
+</view>

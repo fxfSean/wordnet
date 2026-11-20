@@ -1,0 +1,12 @@
+wordnet_version: '3.0'
+batch_size: 50
+concurrency: 3
+max_retries: 3
+prompt_version: v1
+definition_max_words: 30
+example_max_words: 25
+generation_budget_usd: 5
+temperature: 0
+books: [basic_ngsl_1_2]
+wordnet_recommendation_limit: 3
+wordnet_min_tag_count: 1

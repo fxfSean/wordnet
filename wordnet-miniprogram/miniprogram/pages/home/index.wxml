@@ -1,0 +1,60 @@
+<view class="home {{themeClass}}">
+  <view class="hero">
+    <view class="hero-glow"></view>
+
+    <view class="hero-top">
+      <view class="identity">
+        <view class="avatar">W</view>
+        <view>
+          <text class="hero-kicker">WORD STUDY</text>
+          <text class="hero-date">{{dateLabel}}</text>
+        </view>
+      </view>
+      <view class="hero-actions">
+        <view class="theme-toggle" bindtap="toggleTheme">
+          <text class="theme-toggle-icon">{{theme === 'dark' ? '☀' : '☾'}}</text>
+          <text class="theme-toggle-label">{{themeLabel}}</text>
+        </view>
+        <view class="streak-pill">
+          <text class="streak-dot"></text>
+          <text class="streak-num">{{streak}}</text>
+          <text class="streak-label">day streak</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="hero-center">
+      <text class="hero-count">{{today}}</text>
+      <text class="hero-count-label">cards reviewed today</text>
+      <view class="goal-track"><view class="goal-fill" style="width: {{goalPercent}}%"></view></view>
+      <text class="hero-goal">{{todayNew}} of {{goal}} new cards · {{todayTime}} active</text>
+    </view>
+
+    <view class="bands">
+      <view class="band" bindtap="study">
+        <view class="band-top">
+          <text class="band-label">LEARN</text>
+          <text class="band-count">{{newRemaining}}</text>
+        </view>
+        <text class="band-sub">new cards left</text>
+      </view>
+      <view class="band" bindtap="review">
+        <view class="band-top">
+          <text class="band-label">REVIEW</text>
+          <text class="band-count review-count">{{due}}</text>
+        </view>
+        <text class="band-sub">due now</text>
+      </view>
+    </view>
+
+    <text class="hero-plan">{{bookTitle}} · {{unitText}}</text>
+    <text class="hero-meta">{{studied}} studied · {{mastered}} mastered · {{learning}} learning · {{reviewing}} reviewing</text>
+
+    <view class="quick-row">
+      <view class="quick" bindtap="browse"><text class="quick-icon">▤</text><text>Wordbook</text></view>
+      <view class="quick" bindtap="content"><text class="quick-icon">◈</text><text>Content</text></view>
+      <view class="quick" bindtap="stats"><text class="quick-icon">◔</text><text>Stats</text></view>
+      <view class="quick" bindtap="plan"><text class="quick-icon">▥</text><text>Books</text></view>
+    </view>
+  </view>
+</view>

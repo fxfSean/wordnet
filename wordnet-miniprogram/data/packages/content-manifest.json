@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "file": "content.json.gz",
+  "bytes": 514389,
+  "sha256": "f4c943ebf6d71ceb72fbc5fd3f633a5194e7205a6f6a3489e62eb050ebb929e5",
+  "words": 8186,
+  "phraseWords": 7287,
+  "rootWords": 4003,
+  "maxPhrases": 6
+}

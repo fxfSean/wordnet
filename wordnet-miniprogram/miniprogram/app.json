@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/study/index",
+    "pages/library/index",
+    "pages/books/index",
+    "pages/stats/index",
+    "pages/content/index",
+    "pages/spell/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "Word Study",
+    "navigationBarBackgroundColor": "#F6F3EA",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6F3EA"
+  },
+  "style": "v2"
+}

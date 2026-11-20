@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>英英词库预览</title>
+<style>
+:root { color-scheme: light; font:16px/1.6 "Inter", "Microsoft YaHei", sans-serif; color:#172f2b; background:#f1f4ed }
+* { box-sizing:border-box }
+main { max-width:880px; margin:0 auto; padding:clamp(24px,6vw,64px) 20px }
+h1 { margin:0 0 8px; font-size:clamp(30px,6vw,48px); letter-spacing:-.04em }
+h2,h3,p { margin:0 }
+header { margin-bottom:26px }
+.muted, .meta { color:#4c625d }
+form { display:flex; gap:8px; margin:16px 0 10px }
+input,button { font:inherit; padding:9px 15px; border:1px solid #a6b8af; border-radius:8px }
+input { min-width:0; flex:1; background:#fff }
+button { background:#124f40; color:white; cursor:pointer }
+button.sample { background:transparent; color:#124f40; padding:3px 12px }
+.samples { display:flex; flex-wrap:wrap; gap:8px }
+#status { margin:22px 0 8px }
+article { background:white; border:1px solid #cdd9d2; border-radius:12px; padding:20px; margin:12px 0 }
+.meta { font-size:.85rem; overflow-wrap:anywhere }
+.draft { border-left:3px solid #288068; background:#e9f5ef; margin-top:14px; padding:10px 12px }
+.example { margin-top:5px; color:#4c625d }
+details { margin:16px 0 }
+summary { cursor:pointer }
+pre { padding:14px; background:#e2ebe4; overflow:auto; max-height:24rem }
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>英英词库预览</h1>
+<p class="muted">查询本地 NGSL 词表，查看排序后的 WordNet 原义。</p>
+</header>
+<form id="search">
+<input id="lemma" aria-label="英文单词或词组" placeholder="输入英文单词或词组" maxlength="140" required>
+<button type="submit">查词</button>
+</form>
+<div class="samples"><button class="sample">bank</button><button class="sample">light</button><button class="sample">criteria</button><button class="sample">the</button></div>
+<label><input type="checkbox" id="inspect"> 查看全部候选及 AI 草稿</label>
+<p id="status" role="status" aria-live="polite"></p>
+<section id="results" aria-label="词义"></section>
+<details id="response" hidden><summary>查看后端 JSON 响应</summary><pre></pre></details>
+</main>
+<script>
+const input = document.querySelector('#lemma');
+const results = document.querySelector('#results');
+const status = document.querySelector('#status');
+const response = document.querySelector('#response');
+const inspect = document.querySelector('#inspect');
+let current;
+
+function add(parent, tag, value, className) {
+  const child = document.createElement(tag);
+  child.textContent = value;
+  if (className) child.className = className;
+  parent.append(child);
+  return child;
+}
+
+async function lookup(lemma) {
+  current?.abort();
+  const request = new AbortController();
+  current = request;
+  results.replaceChildren();
+  response.hidden = true;
+  status.textContent = '正在查询本地词库…';
+  try {
+    const endpoint = inspect.checked ? '/api/word' : '/api/learner-word';
+    const res = await fetch(endpoint + '?lemma=' + encodeURIComponent(lemma), {signal: request.signal});
+    const data = await res.json();
+    if (current !== request) return;
+    response.querySelector('pre').textContent = JSON.stringify(data, null, 2);
+    response.hidden = false;
+    if (!res.ok) {
+      status.textContent = data.error;
+      return;
+    }
+    if (!inspect.checked) {
+      const primary = data.senses.filter(sense => sense.is_primary);
+      const more = data.senses.filter(sense => !sense.is_primary);
+      status.textContent = data.word + (primary.length ? ' · 常用义预览' :
+        data.match_status === 'unmatched' ? ' · 暂无 WordNet 匹配义项' : ' · 常用义暂未选定');
+      if (data.ranking_source === 'wordnet_tag_count') {
+        add(results, 'p', '依据 WordNet 历史标注初排', 'meta');
+      }
+      if (data.ranking_source === 'ai_selection') {
+        add(results, 'p', 'AI 选义 · WordNet 原文', 'meta');
+      }
+      for (const sense of primary) renderLearnerSense(results, sense);
+      if (more.length) {
+        const extra = add(results, 'details', '');
+        add(extra, 'summary', '更多义项（' + more.length + '）');
+        for (const sense of more) renderLearnerSense(extra, sense);
+      }
+      return;
+    }
+    const drafts = data.senses.filter(sense => sense.ai_draft).length;
+    status.textContent = data.senses.length
+      ? data.word + ' · ' + data.senses.length + ' 条候选义项 · ' + drafts + ' 条 AI 草稿'
+      : data.word + ' 已收录，暂无 WordNet 匹配义项。';
+    for (const sense of [...data.senses].sort((a, b) => Number(!!b.ai_draft) - Number(!!a.ai_draft))) {
+      const card = add(results, 'article', '');
+      add(card, 'p', sense.pos + ' · ' + sense.sense_id + (sense.recommended ? ' · 推荐义项' : ''), 'meta');
+      add(card, 'h3', sense.definition_original);
+      for (const example of sense.examples_original) add(card, 'p', example, 'example');
+      if (sense.ai_draft) {
+        const draft = add(card, 'div', '', 'draft');
+        add(draft, 'p', 'AI 草稿 · ' + sense.ai_draft.review_status, 'meta');
+        if (sense.ai_draft.simple_definition) add(draft, 'p', sense.ai_draft.simple_definition);
+        if (sense.ai_draft.example_en) add(draft, 'p', sense.ai_draft.example_en, 'example');
+      }
+    }
+  } catch (error) {
+    if (current === request && error.name !== 'AbortError') status.textContent = '无法连接本地查词接口。';
+  }
+}
+function renderLearnerSense(parent, sense) {
+  const card = add(parent, 'article', '');
+  add(card, 'p', sense.pos, 'meta');
+  add(card, 'h3', sense.definition_en);
+  for (const example of sense.examples_en) add(card, 'p', example, 'example');
+}
+inspect.addEventListener('change', () => {
+  if (input.value.trim()) lookup(input.value.trim());
+});
+document.querySelector('#search').addEventListener('submit', event => {
+  event.preventDefault();
+  if (input.value.trim()) lookup(input.value.trim());
+});
+for (const button of document.querySelectorAll('.sample')) {
+  button.addEventListener('click', () => {
+    input.value = button.textContent;
+    lookup(input.value);
+  });
+}
+input.value = 'bank';
+lookup(input.value);
+</script>
+</body>
+</html>

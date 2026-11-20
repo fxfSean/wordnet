@@ -1,0 +1,13 @@
+{
+  "sense_id": "dev20:01",
+  "lemma": "anchor",
+  "pos": "noun",
+  "source_definition": "A heavy object that keeps a boat in place",
+  "source": {
+    "source_name": "dev20",
+    "source_version": "1",
+    "source_id": "dev20:01",
+    "license_id": "local-dev"
+  },
+  "selection_status": "selected"
+}

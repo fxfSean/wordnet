@@ -1,0 +1,69 @@
+<view class="shell content-page">
+  <view class="content-head">
+    <view>
+      <text class="kicker">MY CONTENT</text>
+      <text class="title">My content</text>
+      <text class="muted">{{bookTitle}} · {{dueCount}} due now</text>
+    </view>
+    <button class="secondary compact" bindtap="practice">Spell practice</button>
+  </view>
+
+  <scroll-view class="content-tabs" scroll-x>
+    <text wx:for="{{tabs}}" wx:key="id"
+          class="content-tab {{tab === item.id ? 'on' : ''}}"
+          data-tab="{{item.id}}" bindtap="selectTab">{{item.label}} {{item.count}}</text>
+  </scroll-view>
+
+  <view class="paper content-card" wx:if="{{tab === 'learning'}}">
+    <text class="empty" wx:if="{{!learning.length}}">{{empty}}</text>
+    <view class="content-row" wx:for="{{learning}}" wx:key="key" bindtap="openWord" data-word="{{item.word}}">
+      <view class="content-row-main">
+        <view class="content-row-title">
+          <text class="content-word">{{item.word}}</text>
+          <text class="stage {{item.tone}}">{{item.stageLabel}}</text>
+          <text class="due-tag" wx:if="{{item.due}}">Due</text>
+        </view>
+        <text class="content-def">{{item.pos}} · {{item.definition}}</text>
+      </view>
+      <text class="content-date">{{item.last}}</text>
+    </view>
+  </view>
+
+  <view class="paper content-card" wx:if="{{tab === 'saved'}}">
+    <text class="empty" wx:if="{{!saved.length}}">{{empty}}</text>
+    <view class="content-row" wx:for="{{saved}}" wx:key="word" bindtap="openWord" data-word="{{item.word}}">
+      <view class="content-row-main">
+        <view class="content-row-title"><text class="content-word">{{item.word}}</text><text class="stage learning">{{item.pos}}</text></view>
+        <text class="content-def">{{item.definition}}</text>
+        <text class="content-note" wx:if="{{item.note}}">{{item.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="paper content-card" wx:if="{{tab === 'sentences'}}">
+    <text class="empty" wx:if="{{!sentences.length}}">{{empty}}</text>
+    <view class="sentence-row" wx:for="{{sentences}}" wx:key="key">
+      <text class="sentence-en">{{item.en}}</text>
+      <text class="sentence-zh" wx:if="{{item.zh}}">{{item.zh}}</text>
+      <view class="sentence-foot">
+        <text class="sentence-word" bindtap="openWord" data-word="{{item.word}}">{{item.word}}</text>
+        <view class="sentence-actions">
+          <text class="sentence-action" catchtap="playSentence" data-index="{{index}}">Play</text>
+          <text class="sentence-action remove" catchtap="removeSentence" data-index="{{index}}">Remove</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="paper content-card" wx:if="{{tab === 'notes'}}">
+    <text class="empty" wx:if="{{!notes.length}}">{{empty}}</text>
+    <view class="note-row" wx:for="{{notes}}" wx:key="word">
+      <view class="content-row-title">
+        <text class="content-word" bindtap="openWord" data-word="{{item.word}}">{{item.word}}</text>
+        <text class="note-remove" catchtap="removeNote" data-word="{{item.word}}">Remove</text>
+      </view>
+      <text class="content-def">{{item.definition}}</text>
+      <text class="note-text">{{item.note}}</text>
+    </view>
+  </view>
+</view>

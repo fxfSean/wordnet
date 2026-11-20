@@ -1,0 +1,6 @@
+Process this single WordNet sense:
+{source}
+
+Return exactly these JSON keys:
+{{"word":"input word","sense_id":"input sense_id","pos":"input pos","simple_definition":"English definition","example":"English example","difficulty":"B1","generation_status":"generated","semantic_check":"supported","reason":""}}
+Difficulty must be A1, A2, B1, B2, C1, C2, or unknown. Generation status must be generated or needs_review. Check whether both outputs preserve the source sense and whether the example could be read as a different sense. Set semantic_check to supported, uncertain, or mismatch. Give a reason when uncertain or mismatched. If neither text can safely be produced, use null for both texts and needs_review.

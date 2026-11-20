@@ -1,0 +1,7 @@
+node_modules/
+project.private.config.json
+miniprogram/**/*.js
+!miniprogram/lib/fflate.js
+!miniprogram/data/catalog.gz.js
+__pycache__/
+*.pyc

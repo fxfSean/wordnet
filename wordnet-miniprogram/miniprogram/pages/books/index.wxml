@@ -1,0 +1,100 @@
+<view class="shell plan-page">
+  <text class="kicker">BOOKSHELF</text>
+  <text class="title">Choose a wordbook</text>
+  <text class="muted plan-intro">Pick a book from the shelf, then choose the unit range for this plan.</text>
+
+  <view class="shelf-meta">
+    <text class="shelf-selected">Selected · {{bookTitle}}</text>
+    <text>{{bookCovers.length}} books</text>
+  </view>
+
+  <scroll-view class="shelf" scroll-x scroll-with-animation show-scrollbar="{{false}}" scroll-into-view="{{scrollTarget}}">
+    <view class="shelf-track">
+      <view class="book-card {{item.selected ? 'selected' : ''}}" wx:for="{{bookCovers}}" wx:key="id"
+            id="book-{{item.id}}" data-id="{{item.id}}" bindtap="selectBookById">
+        <view class="book {{item.color}}">
+          <view class="book-spine"></view>
+          <view class="book-face">
+            <text class="book-kicker">{{item.subtitle}}</text>
+            <text class="book-title">{{item.title}}</text>
+            <text class="book-count">{{item.wordCount}} words</text>
+          </view>
+          <view class="book-check" wx:if="{{item.selected}}">✓</view>
+        </view>
+        <view class="book-progress"><view class="book-progress-fill" style="width: {{item.percent}}%"></view></view>
+        <view class="book-foot">
+          <text class="book-studied">{{item.studied}} studied</text>
+          <text class="book-current" wx:if="{{item.selected}}">SELECTED</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="paper selected-card">
+    <view class="selected-head">
+      <text class="kicker">SELECTED</text>
+      <text class="selected-count">{{cardCount}} cards in range</text>
+    </view>
+    <text class="selected-title">{{bookTitle}}</text>
+    <text class="selected-sub">{{bookSubtitle}} · {{summary}}</text>
+    <text class="selected-desc">{{bookDescription}}</text>
+    <text class="selected-source">{{sourceLabel}}</text>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">UNIT RANGE</text>
+    <view class="row">
+      <text>Start</text>
+      <picker range="{{unitLabels}}" value="{{startIndex}}" bindchange="setStart">
+        <text>{{startLabel}}</text>
+      </picker>
+    </view>
+    <view class="row sep">
+      <text>End</text>
+      <picker range="{{unitLabels}}" value="{{endIndex}}" bindchange="setEnd">
+        <text>{{endLabel}}</text>
+      </picker>
+    </view>
+    <text class="example">New cards and due reviews are limited to this range.</text>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">DAILY RHYTHM</text>
+    <view class="row">
+      <text>New cards per day</text>
+      <picker range="{{goals}}" value="{{goalIndex}}" bindchange="setGoal">
+        <text>{{goal}} · Change</text>
+      </picker>
+    </view>
+    <view class="row sep">
+      <text>Session size</text>
+      <picker range="{{groupSizes}}" value="{{groupIndex}}" bindchange="setGroup">
+        <text>{{groupSize}} · Change</text>
+      </picker>
+    </view>
+    <view class="row sep">
+      <text>Pronunciation</text>
+      <picker range="{{accents}}" value="{{accentIndex}}" bindchange="setAccent">
+        <text>{{accentLabel}} · Change</text>
+      </picker>
+    </view>
+    <view class="row sep">
+      <text>Autoplay word audio</text>
+      <switch checked="{{autoplay}}" color="#E08A4A" bindchange="toggleAutoplay" />
+    </view>
+  </view>
+
+  <view class="paper">
+    <text class="kicker">APPEARANCE</text>
+    <view class="row">
+      <text>Theme</text>
+      <view class="theme-options">
+        <text class="theme-option {{theme === 'dark' ? 'on' : ''}}" data-theme="dark" bindtap="selectTheme">Dark</text>
+        <text class="theme-option {{theme === 'light' ? 'on' : ''}}" data-theme="light" bindtap="selectTheme">Light</text>
+      </view>
+    </view>
+    <text class="example">Dark keeps the immersive forest palette. Light uses warm paper surfaces and is easier in bright rooms.</text>
+  </view>
+
+  <button class="primary save-plan" bindtap="save">Save plan</button>
+</view>

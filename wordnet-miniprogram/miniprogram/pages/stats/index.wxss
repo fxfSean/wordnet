@@ -1,0 +1,222 @@
+page {
+  background: #F6F3EA;
+}
+
+.stats-page {
+  padding-bottom: 70rpx;
+}
+
+.stats-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin: 22rpx 0 10rpx;
+  padding: 34rpx 32rpx;
+  border-radius: 26rpx;
+  color: #F4EFE2;
+  background:
+    radial-gradient(circle at 86% 4%, rgba(76, 130, 102, 0.75) 0, rgba(10, 23, 17, 0) 48%),
+    linear-gradient(150deg, #0B1712 0%, #143126 62%, #1D3A2C 100%);
+}
+
+.stats-hero-main {
+  flex: 1;
+}
+
+.stats-hero-num {
+  display: block;
+  color: #E08A4A;
+  font-family: Georgia, serif;
+  font-size: 110rpx;
+  line-height: 0.95;
+}
+
+.stats-hero-label {
+  display: block;
+  margin-top: 8rpx;
+  color: #C9B99A;
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.stats-hero-side {
+  display: flex;
+  gap: 32rpx;
+  padding-bottom: 6rpx;
+}
+
+.stats-hero-value {
+  display: block;
+  color: #F4EFE2;
+  font-family: Georgia, serif;
+  font-size: 34rpx;
+  text-align: right;
+}
+
+.stats-hero-key {
+  display: block;
+  margin-top: 4rpx;
+  color: #C9B99A;
+  font-size: 18rpx;
+  text-align: right;
+}
+
+.mastery-row {
+  margin-top: 22rpx;
+}
+
+.mastery-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 8rpx;
+  font-size: 25rpx;
+}
+
+.mastery-track {
+  height: 8rpx;
+  border-radius: 8rpx;
+  background: #ECE6D8;
+  overflow: hidden;
+}
+
+.mastery-fill {
+  height: 100%;
+  border-radius: 8rpx;
+}
+
+.mastery-fill.learning {
+  background: #E08A4A;
+}
+
+.mastery-fill.reviewing {
+  background: #7CA58F;
+}
+
+.mastery-fill.mastered {
+  background: #14634E;
+}
+
+.recent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #EDE7D8;
+}
+
+.recent-row:last-child {
+  border-bottom: none;
+}
+
+.recent-date {
+  color: #172B25;
+  font-family: Georgia, serif;
+  font-size: 26rpx;
+}
+
+.chart .bar {
+  background: #14634E;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.calendar-title {
+  display: block;
+  margin-top: 10rpx;
+  color: #172B25;
+  font-family: Georgia, serif;
+  font-size: 32rpx;
+}
+
+.calendar-weekdays {
+  display: flex;
+  margin-top: 16rpx;
+}
+
+.calendar-weekdays text {
+  flex: 1;
+  color: #8A978F;
+  font-size: 18rpx;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8rpx;
+}
+
+.calendar-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 14.285%;
+  height: 72rpx;
+  border-radius: 12rpx;
+}
+
+.calendar-cell.today {
+  background: #F3DFCC;
+}
+
+.calendar-day {
+  color: #3E5148;
+  font-size: 21rpx;
+}
+
+.calendar-dot {
+  width: 10rpx;
+  height: 10rpx;
+  margin-top: 4rpx;
+  border-radius: 50%;
+}
+
+.level-1 {
+  background: #C9DDCF;
+}
+
+.level-2 {
+  background: #8FBD9F;
+}
+
+.level-3 {
+  background: #3E7D60;
+}
+
+.level-4 {
+  background: #14634E;
+}
+
+/* Paper / daylight theme */
+.theme-light .stats-hero {
+  color: #172B25;
+  background:
+    radial-gradient(circle at 86% 4%, rgba(224, 138, 74, 0.22) 0, rgba(246, 243, 234, 0) 50%),
+    linear-gradient(150deg, #FCFAF3 0%, #F4EEDF 62%, #EFE6D3 100%);
+  box-shadow: inset 0 0 0 1rpx #E2DCCD;
+}
+
+.theme-light .stats-hero-num {
+  color: #C05A2E;
+}
+
+.theme-light .stats-hero-label,
+.theme-light .stats-hero-key {
+  color: #8A6A4F;
+}
+
+.theme-light .stats-hero-value {
+  color: #172B25;
+}
+

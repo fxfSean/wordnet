@@ -1,0 +1,14 @@
+{
+  "name": "wordnet-study-miniprogram",
+  "private": true,
+  "scripts": {
+    "build": "python scripts/prepare_data.py && tsc",
+    "build:packages": "python scripts/build_book_packages.py",
+    "build:content": "python scripts/build_content_package.py",
+    "test": "npm run build && node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

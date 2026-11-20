@@ -1,0 +1,51 @@
+<view class="spell {{themeClass}}">
+  <view class="spell-top">
+    <view>
+      <text class="spell-kicker">{{mode === 'listen' ? 'LISTENING PRACTICE' : 'SPELLING PRACTICE'}}</text>
+      <text class="spell-count">{{completed}} / {{total}}</text>
+    </view>
+    <view class="spell-top-right">
+      <text class="spell-theme" bindtap="toggleTheme">{{theme === 'dark' ? '☀ Light' : '☾ Dark'}}</text>
+      <text class="spell-close" bindtap="home">×</text>
+    </view>
+  </view>
+
+  <view class="spell-progress"><view class="spell-progress-fill" style="width: {{progressPercent}}%"></view></view>
+
+  <view class="spell-mode">
+    <text class="mode-tab {{mode === 'spell' ? 'on' : ''}}" data-mode="spell" bindtap="setMode">Spell</text>
+    <text class="mode-tab {{mode === 'listen' ? 'on' : ''}}" data-mode="listen" bindtap="setMode">Listen</text>
+  </view>
+
+  <block wx:if="{{current}}">
+    <view class="spell-stage">
+      <text class="spell-pos">{{current.pos}} · Unit {{current.unit}}</text>
+      <block wx:if="{{mode === 'spell'}}">
+        <text class="spell-prompt">Type the word that matches this meaning</text>
+        <text class="spell-definition">{{current.definition}}</text>
+      </block>
+      <block wx:else>
+        <text class="spell-prompt">Listen and type the word</text>
+        <view class="spell-replay" bindtap="replay"><text class="replay-dot"></text><text>Play again</text></view>
+      </block>
+
+      <input class="spell-input" value="{{input}}" placeholder="Type the word" placeholder-class="spell-placeholder" bindinput="input" confirm-type="done" bindconfirm="check" />
+      <text class="spell-feedback {{correct ? 'good' : 'bad'}}" wx:if="{{checked}}">{{feedback}}</text>
+
+      <view class="spell-actions" wx:if="{{!checked}}">
+        <button class="spell-skip" bindtap="skip">Skip</button>
+        <button class="spell-check" bindtap="check">Check</button>
+      </view>
+      <view class="spell-actions" wx:else>
+        <button class="spell-check" bindtap="next">Next word</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="spell-empty">
+    <text class="spell-empty-title">Session complete</text>
+    <text class="spell-empty-body">{{correctCount}} correct · {{total}} cards</text>
+    <button class="spell-check" bindtap="restart">Practice again</button>
+    <button class="spell-skip top-gap" bindtap="home">Back</button>
+  </view>
+</view>

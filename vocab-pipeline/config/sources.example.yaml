@@ -1,0 +1,34 @@
+# Copy to data/raw/sources.yaml and complete one entry per configured book.
+wordlists:
+  example_book:
+    status: blocked
+    source_name: ""
+    source_version: ""
+    url: ""
+    acquired_at: null
+    license_id: ""
+    license_name: ""
+    license_text: ""
+    commercial_use: null
+    modification: null
+    redistribution: null
+    cloud_storage: null
+    attribution_required: null
+    reviewer: ""
+    reviewed_at: null
+wordnet:
+  status: blocked
+  source_name: Princeton WordNet
+  source_version: "3.0"
+  url: https://wordnet.princeton.edu/
+  acquired_at: null
+  license_id: wordnet-3.0
+  license_name: Princeton WordNet 3.0 License
+  license_text: ""
+  commercial_use: null
+  modification: null
+  redistribution: null
+  cloud_storage: null
+  attribution_required: null
+  reviewer: ""
+  reviewed_at: null
